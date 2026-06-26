@@ -2,285 +2,187 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Arcade OS</title>
+<title>Arcade OS Desktop</title>
 
 <style>
 body {
   margin: 0;
   font-family: monospace;
-  background: #0b0b12;
+  background: radial-gradient(circle at center, #1a1a2e, #0b0b12);
   color: white;
-  text-align: center;
   overflow: hidden;
 }
 
-button {
-  padding: 10px;
-  margin: 5px;
-  border-radius: 10px;
-  border: 1px solid #a78bfa;
-  background: #1e1e2e;
-  color: white;
-  cursor: pointer;
-  transition: 0.2s;
+/* BOOT SCREEN */
+#boot {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-button:hover {
+#desktop {
+  display: none;
+  width: 100%;
+  height: 100vh;
+}
+
+/* TASKBAR */
+#taskbar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background: rgba(20,20,30,0.8);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+/* ICONS */
+.icon {
+  width: 80px;
+  text-align: center;
+  cursor: pointer;
+  margin: 20px;
+  display: inline-block;
+}
+
+/* WINDOW */
+.window {
+  position: absolute;
+  width: 300px;
+  background: rgba(30,30,50,0.95);
+  border: 1px solid #a78bfa;
+  border-radius: 10px;
+  padding: 10px;
+  top: 100px;
+  left: 100px;
+}
+
+.titlebar {
+  cursor: move;
   background: #a78bfa;
   color: black;
+  padding: 5px;
+  font-weight: bold;
 }
 
-.screen {
-  opacity: 1;
-  transition: 0.25s ease;
+/* XP BAR */
+#xpbar {
+  width: 150px;
+  height: 10px;
+  border: 1px solid #a78bfa;
+  margin-left: 10px;
 }
 
-.fade {
-  opacity: 0;
-}
-
-.card {
-  width: 360px;
-  margin: 20px auto;
-  padding: 15px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 12px;
-}
-
-/* Snake grid */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(10, 20px);
-  justify-content: center;
-  margin-top: 10px;
-}
-.cell {
-  width: 20px;
-  height: 20px;
-  font-size: 10px;
+#xpfill {
+  height: 100%;
+  width: 30%;
+  background: #a78bfa;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🎮 Arcade OS v2</h1>
-<div id="app" class="screen"></div>
+<!-- BOOT -->
+<div id="boot">
+  <h1>Booting Arcade OS...</h1>
+</div>
+
+<!-- DESKTOP -->
+<div id="desktop">
+
+  <!-- ICONS -->
+  <div class="icon" onclick="openApp('clicker')">🎮 Clicker</div>
+  <div class="icon" onclick="openApp('snake')">🐍 Snake</div>
+  <div class="icon" onclick="openApp('guess')">🎲 Guess</div>
+
+  <!-- WINDOW AREA -->
+  <div id="windows"></div>
+
+  <!-- TASKBAR -->
+  <div id="taskbar">
+    XP Level:
+    <div id="xpbar"><div id="xpfill"></div></div>
+  </div>
+
+</div>
 
 <script>
-/* ------------------ STATE SYSTEM ------------------ */
-const State = {
-  clicks: 0,
-  xp: Number(localStorage.getItem("xp")) || 0,
-  bestReaction: Number(localStorage.getItem("best")) || null,
+/* ---------------- XP SYSTEM ---------------- */
+let xp = 0;
 
-  save(){
-    localStorage.setItem("xp", this.xp);
-    localStorage.setItem("best", this.bestReaction);
-  }
-};
-
-/* ------------------ SOUND ENGINE ------------------ */
-const Sound = {
-  beep(freq=440){
-    const ctx = new (window.AudioContext||window.webkitAudioContext)();
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-
-    o.connect(g);
-    g.connect(ctx.destination);
-
-    o.frequency.value = freq;
-    o.start();
-
-    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1);
-    o.stop(ctx.currentTime + 0.1);
-  }
-};
-
-/* ------------------ NAV ENGINE ------------------ */
-const app = document.getElementById("app");
-
-function go(page){
-  app.classList.add("fade");
-
-  setTimeout(() => {
-    app.innerHTML = pages[page]();
-    app.classList.remove("fade");
-  }, 150);
+function addXP(n){
+  xp += n;
+  document.getElementById("xpfill").style.width = (xp % 100) + "%";
 }
 
-/* ------------------ XP SYSTEM ------------------ */
-function addXP(x){
-  State.xp += x;
-  State.save();
+/* ---------------- BOOT SEQUENCE ---------------- */
+setTimeout(() => {
+  document.getElementById("boot").style.display = "none";
+  document.getElementById("desktop").style.display = "block";
+}, 2000);
+
+/* ---------------- WINDOW SYSTEM ---------------- */
+function openApp(app){
+
+  let win = document.createElement("div");
+  win.className = "window";
+
+  let content = "";
+
+  if(app === "clicker"){
+    content = `
+      <div class="titlebar">Clicker</div>
+      <p id="c">0</p>
+      <button onclick="clicker()">Click</button>
+    `;
+  }
+
+  if(app === "guess"){
+    content = `
+      <div class="titlebar">Guess Game</div>
+      <input id="g">
+      <button onclick="check()">Check</button>
+      <p id="out"></p>
+    `;
+  }
+
+  if(app === "snake"){
+    content = `
+      <div class="titlebar">Snake (simple)</div>
+      <p>Not full snake here (kept light for demo)</p>
+    `;
+  }
+
+  win.innerHTML = content;
+  document.getElementById("windows").appendChild(win);
+
+  addXP(10);
 }
 
-/* ------------------ PAGES ------------------ */
-const pages = {
-
-home: () => `
-  <div class="card">
-    <h2>Welcome</h2>
-    <button onclick="go('menu')">Enter Arcade</button>
-  </div>
-`,
-
-menu: () => `
-  <div class="card">
-    <h2>Menu</h2>
-
-    <button onclick="go('clicker')">Clicker</button>
-    <button onclick="go('reaction')">Reaction</button>
-    <button onclick="go('snake')">Snake</button>
-    <button onclick="go('flappy')">Flappy</button>
-
-    <p>XP: ${State.xp}</p>
-
-    <button onclick="go('home')">Exit</button>
-  </div>
-`,
-
-clicker: () => `
-  <div class="card">
-    <h2>Clicker</h2>
-    <p id="c">${State.clicks}</p>
-    <button onclick="clicker()">Click</button>
-    <br><br>
-    <button onclick="go('menu')">Back</button>
-  </div>
-`,
-
-reaction: () => `
-  <div class="card">
-    <h2>Reaction</h2>
-    <p id="r">Wait...</p>
-    <button onclick="react()">Tap</button>
-    <br><br>
-    <button onclick="go('menu')">Back</button>
-  </div>
-`,
-
-snake: () => {
-  setTimeout(initSnake, 50);
-  return `
-    <div class="card">
-      <h2>Snake</h2>
-      <div id="grid"></div>
-      <button onclick="go('menu')">Back</button>
-    </div>
-  `;
-},
-
-flappy: () => `
-  <div class="card">
-    <h2>Flappy Lite</h2>
-    <p id="f">Press click to jump</p>
-    <button onclick="flap()">Flap</button>
-    <br><br>
-    <button onclick="go('menu')">Back</button>
-  </div>
-`
-
-};
-
-/* ------------------ CLICKER ------------------ */
+/* ---------------- CLICKER ---------------- */
+let clicks = 0;
 function clicker(){
-  State.clicks++;
+  clicks++;
+  document.getElementById("c").innerText = clicks;
   addXP(1);
-  Sound.beep(600);
-  document.getElementById("c").innerText = State.clicks;
 }
 
-/* ------------------ REACTION ------------------ */
-let start = Date.now();
-setTimeout(()=> start = Date.now(), 1500);
+/* ---------------- GUESS ---------------- */
+let secret = Math.floor(Math.random()*10)+1;
 
-function react(){
-  let t = Date.now() - start;
-
-  if(!State.bestReaction || t < State.bestReaction){
-    State.bestReaction = t;
-    State.save();
-  }
-
-  Sound.beep(900);
-
-  document.getElementById("r").innerText =
-    `Time: ${t}ms | Best: ${State.bestReaction}`;
+function check(){
+  let g = +document.getElementById("g").value;
+  document.getElementById("out").innerText =
+    g === secret ? "Correct 🎉" : "Nope";
+  addXP(5);
 }
-
-/* ------------------ SNAKE ------------------ */
-let snake, dir, food, interval;
-
-function initSnake(){
-  snake = [{x:5,y:5}];
-  dir = {x:1,y:0};
-  food = {x:2,y:2};
-
-  document.onkeydown = e => {
-    if(e.key==="ArrowUp") dir={x:0,y:-1};
-    if(e.key==="ArrowDown") dir={x:0,y:1};
-    if(e.key==="ArrowLeft") dir={x:-1,y:0};
-    if(e.key==="ArrowRight") dir={x:1,y:0};
-  };
-
-  clearInterval(interval);
-  interval = setInterval(updateSnake, 250);
-}
-
-function updateSnake(){
-  let head = {x:snake[0].x+dir.x, y:snake[0].y+dir.y};
-  snake.unshift(head);
-
-  if(head.x===food.x && head.y===food.y){
-    food = {
-      x: Math.floor(Math.random()*10),
-      y: Math.floor(Math.random()*10)
-    };
-    addXP(10);
-    Sound.beep(700);
-  } else {
-    snake.pop();
-  }
-
-  drawSnake();
-}
-
-function drawSnake(){
-  let html = `<div class="grid">`;
-
-  for(let y=0;y<10;y++){
-    for(let x=0;x<10;x++){
-      let isS = snake.some(s=>s.x===x && s.y===y);
-      let isF = food.x===x && food.y===y;
-
-      html += `<div class="cell">${
-        isF ? "🍎" : isS ? "🟩" : ""
-      }</div>`;
-    }
-  }
-
-  html += `</div>`;
-  document.getElementById("grid").innerHTML = html;
-}
-
-/* ------------------ FLAPPY LITE ------------------ */
-let f = 5;
-function flap(){
-  f -= 2;
-  Sound.beep(500);
-
-  setTimeout(()=>{
-    f++;
-    document.getElementById("f").innerText = "Height: " + f;
-  }, 300);
-
-  document.getElementById("f").innerText = "Height: " + f;
-}
-
-/* ------------------ START ------------------ */
-go("home");
 </script>
 
 </body>
