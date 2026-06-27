@@ -9,13 +9,25 @@ window.onload = function () {
   // =========================
   // 🔓 UNLOCK SYSTEM
   // =========================
+  document.addEventListener("DOMContentLoaded", () => {
+
+  const lockscreen = document.getElementById("lockscreen");
+  const desktop = document.getElementById("desktop");
+
+  if (!lockscreen || !desktop) {
+    console.log("Missing lockscreen or desktop in HTML");
+    return;
+  }
+
   function unlock() {
     lockscreen.style.display = "none";
     desktop.style.display = "block";
   }
 
-  lockscreen.onclick = unlock;
+  lockscreen.addEventListener("click", unlock);
   document.addEventListener("keydown", unlock);
+
+});
 
   // =========================
   // 🕒 CLOCK
