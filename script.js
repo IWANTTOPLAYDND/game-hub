@@ -1,5 +1,6 @@
 window.onload = function () {
-
+const openWindows = {};
+  
   // =========================
   // 🔒 CORE ELEMENTS
   // =========================
@@ -49,36 +50,68 @@ window.onload = function () {
   // 🪟 WINDOW SYSTEM
   // =========================
   let z = 20;
+window.openApp = function (name) {
 
-  window.openApp = function (name) {
-    const win = document.createElement("div");
-    win.className = "window";
-    win.style.zIndex = z++;
+  // if already open → bring to front
+  if (openWindows[name]) {
+    bringToFront(openWindows[name]);
+    return;
+  }
 
-    let content = "";
+  const win = document.createElement("div");
+  win.className = "window";
+  win.style.zIndex = z++;
 
-    if (name === "library") {
-      content = `
-        <div class="window-header">
-          🎮 Library
-          <span class="close" onclick="this.parentElement.parentElement.remove()">✖</span>
+  let content = "";
+
+  if (name === "library") {
+    content = `
+      <div class="window-header">
+        🎮 Library
+        <div>
+          <span onclick="minimizeWindow('${name}')" style="cursor:pointer;">➖</span>
+          <span onclick="this.parentElement.parentElement.parentElement.remove(); closeWindow('${name}')" style="cursor:pointer;">✖</span>
         </div>
+      </div>
 
-        <p>Welcome to the game library 👀</p>
-        <p>(Games will be added next phase)</p>
-      `;
-    }
+      <p>Game Library Window</p>
+    `;
+  }
+window.bringToFront = function(win){
+  win.style.zIndex = z++;
+};
 
-    else if (name === "settings") {
-      content = `
-        <div class="window-header">
-          ⚙ Settings
-          <span class="close" onclick="this.parentElement.parentElement.remove()">✖</span>
+window.closeWindow = function(name){
+  delete openWindows[name];
+};
+
+window.minimizeWindow = function(name){
+  if (!openWindows[name]) return;
+  openWindows[name].style.display = "none";
+};
+  else if (name === "settings") {
+    content = `
+      <div class="window-header">
+        ⚙ Settings
+        <div>
+          <span onclick="minimizeWindow('${name}')">➖</span>
+          <span onclick="this.parentElement.parentElement.parentElement.remove(); closeWindow('${name}')">✖</span>
         </div>
+      </div>
 
-        <p>Control panel coming soon 💜</p>
-      `;
-    }
+      <p>Control Panel</p>
+    `;
+  }
+
+  win.innerHTML = content;
+  document.body.appendChild(win);
+
+  makeDraggable(win);
+
+  openWindows[name] = win;
+
+  bringToFront(win);
+};
 
     else {
       content = `
