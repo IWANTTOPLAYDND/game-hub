@@ -13,6 +13,7 @@ It contains multiple mini-games, a lightweight game engine system, and save/prog
   - Number Guessing
   - Tic Tac Toe
   - Snake (classic-style)
+  - and more to come
 - 💾 Local save system (scores + progress)
 - 🎨 Theme system (pixel / neon / glitch styles)
 - 🔊 Sound effects engine
