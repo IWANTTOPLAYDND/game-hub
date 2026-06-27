@@ -53,15 +53,28 @@ window.onload = function () {
     let content = "";
 
     if (name === "library") {
-      content = `
-        <div class="window-header">
-          🎮 Library
-          <span onclick="closeWindow(this)">✖</span>
-        </div>
-        <p>Game Library coming next phase 👀</p>
-      `;
-    }
+     content = `
+  <div class="window-header">
+    🎮 Library
+    <span onclick="this.parentElement.parentElement.remove()">✖</span>
+  </div>
 
+  <div class="game-grid">
+
+    <div class="game" onclick="loadGame('clicker')">
+      🖱 Clicker
+    </div>
+
+    <div class="game" onclick="loadGame('guess')">
+      🎲 Guess
+    </div>
+
+    <div class="game" onclick="loadGame('reaction')">
+      ⚡ Reaction
+    </div>
+
+  </div>
+`;
     else if (name === "settings") {
       content = `
         <div class="window-header">
