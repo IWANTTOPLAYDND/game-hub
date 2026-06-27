@@ -5,9 +5,10 @@ window.onload = function () {
   const clock = document.getElementById("clock");
 
   let z = 10;
-  const openWindows = {};
 
-  // 🔓 UNLOCK
+  // =========================
+  // 🔓 UNLOCK SYSTEM
+  // =========================
   function unlock() {
     lockscreen.style.display = "none";
     desktop.style.display = "block";
@@ -16,7 +17,9 @@ window.onload = function () {
   lockscreen.onclick = unlock;
   document.addEventListener("keydown", unlock);
 
+  // =========================
   // 🕒 CLOCK
+  // =========================
   function updateClock() {
     const now = new Date();
     clock.innerText = now.toLocaleTimeString([], {
@@ -28,16 +31,23 @@ window.onload = function () {
   setInterval(updateClock, 1000);
   updateClock();
 
-  // 🪟 OPEN APP
+  // =========================
+  // 🪟 OPEN APP SYSTEM (FIXED)
+  // =========================
   window.openApp = function (name) {
 
-    if (openWindows[name]) {
-      bringToFront(openWindows[name]);
+    // if window already exists → just show it
+    const existing = document.querySelector(`.window[data-app="${name}"]`);
+
+    if (existing) {
+      existing.style.display = "block";
+      bringToFront(existing);
       return;
     }
 
     const win = document.createElement("div");
     win.className = "window";
+    win.setAttribute("data-app", name);
     win.style.zIndex = z++;
 
     let content = "";
@@ -46,9 +56,9 @@ window.onload = function () {
       content = `
         <div class="window-header">
           🎮 Library
-          <span onclick="this.parentElement.parentElement.remove(); closeWindow('library')">✖</span>
+          <span onclick="closeWindow(this)">✖</span>
         </div>
-        <p>Game Library (coming soon)</p>
+        <p>Game Library coming next phase 👀</p>
       `;
     }
 
@@ -56,9 +66,9 @@ window.onload = function () {
       content = `
         <div class="window-header">
           ⚙ Settings
-          <span onclick="this.parentElement.parentElement.remove(); closeWindow('settings')">✖</span>
+          <span onclick="closeWindow(this)">✖</span>
         </div>
-        <p>Settings Panel (coming soon)</p>
+        <p>Settings panel coming next phase 💜</p>
       `;
     }
 
@@ -66,33 +76,51 @@ window.onload = function () {
     document.body.appendChild(win);
 
     makeDraggable(win);
-    openWindows[name] = win;
     bringToFront(win);
   };
 
-  // 🔁 TOGGLE
+  // =========================
+  // 🔁 TOGGLE SYSTEM
+  // =========================
   window.toggleApp = function (name) {
-    const win = openWindows[name];
 
-    if (!win) return openApp(name);
+    const win = document.querySelector(`.window[data-app="${name}"]`);
 
-    win.style.display =
-      win.style.display === "none" ? "block" : "none";
+    if (!win) {
+      openApp(name);
+      return;
+    }
+
+    if (win.style.display === "none") {
+      win.style.display = "block";
+      bringToFront(win);
+    } else {
+      win.style.display = "none";
+    }
   };
 
-  // 🧠 WINDOW SYSTEM
+  // =========================
+  // ❌ CLOSE WINDOW (FIXED)
+  // =========================
+  window.closeWindow = function (el) {
+    const win = el.parentElement.parentElement;
+    win.remove();
+  };
+
+  // =========================
+  // 🧠 BRING TO FRONT
+  // =========================
   function bringToFront(win) {
     win.style.zIndex = z++;
   }
 
-  function closeWindow(name) {
-    delete openWindows[name];
-  }
-
-  // 🖱 DRAGGING
+  // =========================
+  // 🖱 DRAG SYSTEM
+  // =========================
   function makeDraggable(win) {
     let isDown = false;
-    let offsetX, offsetY;
+    let offsetX = 0;
+    let offsetY = 0;
 
     const header = win.querySelector(".window-header");
 
