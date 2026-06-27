@@ -3,54 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neon OS Safe Build</title>
+<title>NeonOS</title>
 
-<style>
-body {
-  margin: 0;
-  font-family: monospace;
-  color: white;
-  height: 100vh;
-  overflow: hidden;
-  background: radial-gradient(circle at top, #2a1b3d, #120b1a, #07050c);
-}
-
-/* SIMPLE GLASS BOX */
-.card {
-  width: 420px;
-  padding: 20px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(167,139,250,0.25);
-  backdrop-filter: blur(10px);
-  text-align: center;
-  margin: auto;
-  margin-top: 15vh;
-}
-
-button {
-  padding: 10px 14px;
-  margin: 6px;
-  border-radius: 10px;
-  border: none;
-  background: #a78bfa;
-  cursor: pointer;
-}
-
-button:hover {
-  transform: scale(1.05);
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="card">
-  <h1>🧪 NEON OS SAFE MODE</h1>
-  <p>If you see this, everything works.</p>
+<!-- 🌌 WALLPAPER -->
+<div id="wallpaper"></div>
 
-  <button onclick="alert('System OK')">Test Button</button>
+<!-- 🔒 LOCK SCREEN -->
+<div id="lockscreen">
+  <h1>🔒 NeonOS</h1>
+  <p>Click or press any key to unlock</p>
 </div>
 
+<!-- 🖥️ DESKTOP -->
+<div id="desktop">
+
+  <!-- ICONS -->
+  <div class="icon" onclick="openApp('library')">🎮 Library</div>
+  <div class="icon" onclick="openApp('settings')">⚙ Settings</div>
+
+</div>
+
+<!-- 📊 TASKBAR -->
+<div id="taskbar">
+  <div class="left">NeonOS</div>
+
+  <div class="center">
+    <button onclick="openApp('library')">Library</button>
+    <button onclick="openApp('settings')">Settings</button>
+  </div>
+
+  <div class="right" id="clock">00:00</div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
