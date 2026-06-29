@@ -28,17 +28,25 @@ body {
   text-align: center;
 }
 
-/* =========================
-   🖥️ DESKTOP
-========================= */
+/* ===========================
+   🖥 DESKTOP
+=========================== */
 
-#desktop {
-  position: fixed;
-  inset: 0;
-  display: none;
+#desktop{
+    position:fixed;
+    inset:0;
 
-  background: radial-gradient(circle at top, #2a1b3d, #120b1a, #07050c);
-  padding: 20px;
+    display:none;
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    transition:
+        background-image .6s ease,
+        filter .4s ease;
+
+    overflow:hidden;
 }
 
 /* =========================
