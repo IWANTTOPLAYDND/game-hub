@@ -1,3 +1,4 @@
+console.log("CORE JS LOADED");
 "use strict";
 
 /* =========================
