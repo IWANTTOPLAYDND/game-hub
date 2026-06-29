@@ -12,22 +12,33 @@ const OS = {
 
   /* 🔒 LOCK */
   setupLock() {
-    let unlocked = false;
+  if (!this.lock || !this.desktop) return;
 
-    const unlock = () => {
-      if (unlocked) return;
-      unlocked = true;
+  let unlocked = false;
 
-      this.playStartup();
+  const unlock = () => {
+    if (unlocked) return;
+    unlocked = true;
 
+    console.log("Unlocked 🔓");
+
+    this.lock.style.opacity = "0";
+    this.lock.style.pointerEvents = "none";
+
+    setTimeout(() => {
       this.lock.style.display = "none";
       this.desktop.style.display = "block";
-    };
+    }, 200);
+  };
 
-    this.lock.addEventListener("click", unlock);
-    document.addEventListener("keydown", unlock, { once: true });
-  },
+  // 🧼 remove accidental double bindings
+  this.lock.replaceWith(this.lock.cloneNode(true));
+  this.lock = document.getElementById("lockscreen");
 
+  this.lock.addEventListener("click", unlock);
+
+  document.addEventListener("keydown", unlock, { once: true });
+}
   /* 📊 TASKBAR */
   setupTaskbar() {
     document.addEventListener("click", (e) => {
