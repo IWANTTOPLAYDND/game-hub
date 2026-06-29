@@ -1,239 +1,68 @@
-
-/* =========================
-   🌌 BASE SYSTEM
-========================= */
-
 body {
   margin: 0;
-  font-family: monospace;
+  font-family: Arial, sans-serif;
   overflow: hidden;
+  background: radial-gradient(circle at top, #2a1b3d, #0b0810);
   color: white;
-  background: black;
 }
 
-/* =========================
-   🔒 LOCK SCREEN
-========================= */
-
+/* 🔒 LOCK SCREEN */
 #lockscreen {
   position: fixed;
   inset: 0;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  background: radial-gradient(circle at top, #2a1b3d, #120b1a, #07050c);
+  background: black;
+  z-index: 9999;
   cursor: pointer;
+}
+
+.lockbox h1 {
+  font-family: cursive;
+  font-size: 60px;
+  margin: 0;
+  color: #c4b5fd;
+}
+
+.lockbox p {
+  opacity: 0.7;
   text-align: center;
 }
 
-/* ===========================
-   🖥 DESKTOP
-=========================== */
-
-#desktop{
-    position:fixed;
-    inset:0;
-
-    display:none;
-
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-
-    transition:
-        background-image .6s ease,
-        filter .4s ease;
-
-    overflow:hidden;
-}
-/* Animated Overlay */
-
-#desktop::before{
-
-content:"";
-
-position:absolute;
-
-inset:0;
-
-background:
-
-radial-gradient(circle at 20% 30%, rgba(255,255,255,.08), transparent 35%),
-
-radial-gradient(circle at 80% 40%, rgba(167,139,250,.10), transparent 30%),
-
-radial-gradient(circle at 50% 90%, rgba(255,255,255,.04), transparent 40%);
-
-animation: floatGlow 18s linear infinite;
-
-pointer-events:none;
-
-}
-
-@keyframes floatGlow{
-
-0%{
-transform:translateY(0px);
-}
-
-50%{
-transform:translateY(-18px);
-}
-
-100%{
-transform:translateY(0px);
-}
-
-}
-/* =========================
-   📁 DESKTOP ICONS
-========================= */
-
-.icon {
-  width: 120px;
-  padding: 12px;
-  margin: 10px;
-
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(167,139,250,0.3);
-  border-radius: 12px;
-
-  text-align: center;
-  cursor: pointer;
-  transition: 0.2s;
-  display: inline-block;
-}
-
-.icon:hover {
-  transform: scale(1.05);
-  background: rgba(167,139,250,0.25);
-}
-
-/* =========================
-   📊 TASKBAR
-========================= */
-
-#taskbar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  height: 45px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 0 12px;
-
-  background: rgba(20,20,35,0.85);
-  backdrop-filter: blur(10px);
-
-  border-top: 1px solid rgba(167,139,250,0.2);
-}
-
-#taskbar .center button {
-  margin: 0 5px;
-}
-
-/* =========================
-   🪟 WINDOWS
-========================= */
-
+/* 🖥 DESKTOP */
 #desktop {
-  position: fixed;
-  inset: 0;
+  width: 100vw;
+  height: 100vh;
   display: none;
-
-  background-image: url("wallpapers/purple-neon.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  transition: background-image 0.5s ease-in-out;
+  position: relative;
 }
 
-/* =========================
-   🪟 WINDOW HEADER
-========================= */
+/* 🪟 WINDOW */
+.window {
+  position: absolute;
+  width: 300px;
+  background: rgba(20,20,30,0.95);
+  border: 1px solid #444;
+  border-radius: 10px;
+  overflow: hidden;
+}
 
 .window-header {
+  background: #111;
+  padding: 8px;
+  cursor: grab;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  cursor: grab;
-  font-weight: bold;
-  margin-bottom: 10px;
 }
 
-/* close button */
-.window-header span {
-  cursor: pointer;
-  color: #ff6b6b;
+.window-body {
+  padding: 10px;
 }
-
-/* =========================
-   🎮 GAME GRID
-========================= */
-
-.game-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.game {
-  padding: 12px;
-  border-radius: 10px;
-
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(167,139,250,0.3);
-
-  text-align: center;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.game:hover {
-  transform: scale(1.05);
-  background: rgba(167,139,250,0.25);
-}
-
-/* =========================
-   🎮 BUTTONS + INPUTS
-========================= */
 
 button {
-  background: transparent;
-  border: 1px solid rgba(167,139,250,0.4);
-  color: white;
-
+  margin: 4px;
   padding: 6px 10px;
-  border-radius: 8px;
-
   cursor: pointer;
-  transition: 0.2s;
-}
-
-button:hover {
-  background: #a78bfa;
-  color: black;
-}
-
-input {
-  width: 90%;
-  padding: 6px;
-
-  border-radius: 8px;
-  border: 1px solid rgba(167,139,250,0.3);
-
-  background: rgba(0,0,0,0.3);
-  color: white;
-
-  margin-bottom: 8px;
 }
