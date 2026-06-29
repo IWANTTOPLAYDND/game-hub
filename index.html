@@ -1,42 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>NeonOS</title>
 
 <link rel="stylesheet" href="style.css">
+
+<!-- ✨ Fonts (safe + stylish) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 </head>
 
 <body>
 
-<!-- 🌌 LOCK SCREEN -->
+<!-- 🔒 LOCK SCREEN -->
 <div id="lockscreen">
-  <h1>🔒 NeonOS</h1>
-  <p>Click or press any key to unlock</p>
+  <div class="lock-content">
+    <h1>NeonOS</h1>
+    <p>click or press any key to unlock</p>
+  </div>
 </div>
 
 <!-- 🖥️ DESKTOP -->
 <div id="desktop">
 
-  <!-- ICONS -->
-  <div class="icon" onclick="openApp('library')">🎮 Library</div>
-  <div class="icon" onclick="openApp('settings')">⚙ Settings</div>
+  <!-- 🌌 WALLPAPER EFFECT LAYER -->
+  <div id="desktopEffects"></div>
+
+  <!-- 📁 DESKTOP ICONS (future use) -->
+  <div id="desktopIcons"></div>
 
 </div>
 
 <!-- 📊 TASKBAR -->
 <div id="taskbar">
-  <div class="left">NeonOS</div>
 
-  <div class="center">
-    <button onclick="toggleApp('library')">🎮 Library</button>
-    <button onclick="toggleApp('settings')">⚙ Settings</button>
+  <div class="task-left">
+    NeonOS
   </div>
 
-  <div class="right" id="clock">00:00</div>
+  <div class="task-center">
+    <button onclick="NeonOS.openLibrary()">🎮 Library</button>
+    <button onclick="NeonOS.openSettings()">⚙ Settings</button>
+  </div>
+
+  <div class="task-right">
+    <span id="clock"></span>
+  </div>
+
 </div>
 
-<script src="script.js"></script>
+<!-- 🧠 CORE ENGINE -->
+<script src="js/core.js"></script>
+
 </body>
 </html>
