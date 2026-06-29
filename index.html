@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>NeonOS Clean</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeonOS</title>
 
 <link rel="stylesheet" href="style.css">
 </head>
@@ -14,7 +14,7 @@
 <div id="lockscreen">
   <div class="lockbox">
     <h1>NeonOS</h1>
-    <p>Click or press any key to unlock</p>
+    <p>click or press any key to unlock</p>
   </div>
 </div>
 
@@ -24,74 +24,12 @@
   <div id="desktopEffects"></div>
 
   <div id="taskbar">
-    <div class="left">NeonOS</div>
-
-    <div class="center">
-      <button data-app="library">🎮 Library</button>
-      <button data-app="settings">⚙ Settings</button>
-    </div>
+    <button data-app="library">🎮 Library</button>
+    <button data-app="settings">⚙ Settings</button>
   </div>
 
 </div>
 
 <script src="core.js"></script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>NeonOS</title>
-
-<link rel="stylesheet" href="style.css">
-
-<!-- ✨ Fonts (safe + stylish) -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-</head>
-
-<body>
-
-<!-- 🔒 LOCK SCREEN -->
-<div id="lockscreen">
-  <div class="lock-content">
-    <h1>NeonOS</h1>
-    <p>click or press any key to unlock</p>
-  </div>
-</div>
-
-<!-- 🖥️ DESKTOP -->
-<div id="desktop">
-
-  <!-- 🌌 WALLPAPER EFFECT LAYER -->
-  <div id="desktopEffects"></div>
-
-  <!-- 📁 DESKTOP ICONS (future use) -->
-  <div id="desktopIcons"></div>
-
-</div>
-
-<!-- 📊 TASKBAR -->
-<div id="taskbar">
-
-  <div class="task-left">
-    NeonOS
-  </div>
-
-  <div class="task-center">
-    <button onclick="NeonOS.openLibrary()">🎮 Library</button>
-    <button onclick="NeonOS.openSettings()">⚙ Settings</button>
-  </div>
-
-  <div class="task-right">
-    <span id="clock"></span>
-  </div>
-
-</div>
-
-<!-- 🧠 CORE ENGINE -->
-<script src="js/core.js"></script>
-
 </body>
 </html>
